@@ -1,4 +1,4 @@
-import {Page, Locator} from "@playwright/test";
+import {Page, Locator, expect} from "@playwright/test";
 
 export class RegisterPage
 {
@@ -19,8 +19,13 @@ export class RegisterPage
 
     async navigateToRegisterPage()
     {
-        await this.page.goto("https://demoqa.com/register");
+        await this.page.goto("https://demoqa.com/");
+        await this.page.getByText('Book Store Application').scrollIntoViewIfNeeded();
+        await this.page.getByText('Book Store Application').click();
+        await this.page.locator('#login').click();
+        await this.page.locator('#newUser').click();
     }
+
     async setFirstName(name : string)
     {
         await this.firstname.fill(name);

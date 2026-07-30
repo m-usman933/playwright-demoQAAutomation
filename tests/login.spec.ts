@@ -1,11 +1,16 @@
 import {test, expect} from "@playwright/test";
 import {LoginPage} from  "../pages/loginPage";
 
-test("login to demoQA", async({page})=>
+let loginPage : LoginPage;
+test.beforeEach(async({page}) => 
 {
-    const loginpage = new LoginPage(page);
-    await loginpage.navigateToLoginPage();
-    await loginpage.login('usman_sar87', 'Usman@1234');
+    loginPage = new LoginPage(page);
+    await loginPage.navigateToLoginPage();
+});
+
+test("Valid login to demoQA", async({page})=>
+{
+    await loginPage.login('usman_sar87', 'Usman@1234');
     
     await expect(page).toHaveURL('https://demoqa.com/profile');
     await page.getByText('Elements').click();
