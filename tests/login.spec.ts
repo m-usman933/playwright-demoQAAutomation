@@ -1,14 +1,8 @@
-import {test, expect} from "@playwright/test";
+import {expect} from "@playwright/test";
+import { test } from "../fixtures/fixtures";
 import {LoginPage} from  "../pages/loginPage";
 
-let loginPage : LoginPage;
-test.beforeEach(async({page}) => 
-{
-    loginPage = new LoginPage(page);
-    await loginPage.navigateToLoginPage();
-});
-
-test("Valid login to demoQA", async({page})=>
+test("Valid login to demoQA", async({loginPage, page})=>
 {
     await loginPage.login('usman_sar87', 'Usman@1234');
     
