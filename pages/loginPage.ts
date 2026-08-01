@@ -15,28 +15,29 @@ export class LoginPage
 
     async navigateToLoginPage()
     {
-    await this.page.goto('https://demoqa.com/login');
+        await this.page.goto('https://demoqa.com/login');
     }
 
     async enterUsername(username: string) 
     {
-    await this.username.fill(username);
+        await this.username.fill(username);
     }
 
     async enterPassword(password: string)
     {
-    await this.password.fill(password);
+        await this.password.fill(password);
     }
 
     async clickLogin()
     {
-    await this.loginbutton.click();
+        await this.loginbutton.click();
     }
 
     async login(username: string, password: string)
     {
-    await this.enterUsername(username);
-    await this.enterPassword(password);
-    await this.clickLogin();
+        await this.navigateToLoginPage();
+        await this.enterUsername(username);
+        await this.enterPassword(password);
+        await this.clickLogin();
     }
 }
