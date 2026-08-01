@@ -1,4 +1,4 @@
-import {Page, Locator} from "@playwright/test";
+import {Page, Locator,expect} from "@playwright/test";
 
 export class LoginPage
 {
@@ -39,5 +39,7 @@ export class LoginPage
         await this.enterUsername(username);
         await this.enterPassword(password);
         await this.clickLogin();
+
+        await expect(this.page.getByRole("button", { name: "Logout" })).toBeVisible();
     }
 }
