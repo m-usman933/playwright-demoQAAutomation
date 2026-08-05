@@ -1,4 +1,4 @@
-export function randomString(length : number)
+function randomString(length : number)
 {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let userName = "";
@@ -10,7 +10,7 @@ export function randomString(length : number)
     return userName;
 }
 
-export function generatePassword(length : number)
+function generatePassword(length : number)
 {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
     let password = "";
@@ -22,7 +22,14 @@ export function generatePassword(length : number)
     return password;
 }
 
-export function createUserData() {
+export type UserData = {
+    FirstName: string;
+    LastName: string;
+    username: string;
+    password: string;
+};
+
+export function createUserData(): UserData {
     const username = `usman_${randomString(5)}`;
     const password = generatePassword(9);
 
