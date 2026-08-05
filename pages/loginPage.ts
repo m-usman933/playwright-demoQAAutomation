@@ -36,6 +36,7 @@ export class LoginPage
     async login(username: string, password: string)
     {
         await this.navigateToLoginPage();
+        console.log(await this.page.url());
         await this.enterUsername(username);
         await this.enterPassword(password);
         await this.clickLogin();
