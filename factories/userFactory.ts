@@ -10,7 +10,7 @@ function randomString(length : number)
     return userName;
 }
 
-function generatePassword(length : number)
+/*function generatePassword(length : number)
 {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
     let password = "";
@@ -20,23 +20,19 @@ function generatePassword(length : number)
     }
 
     return password;
-}
+}*/
 
 export type UserData = {
-    FirstName: string;
-    LastName: string;
-    username: string;
+    userName: string;
     password: string;
 };
 
 export function createUserData(): UserData {
-    const username = `usman_${randomString(5)}`;
-    const password = generatePassword(9);
+    const userName = `usman_${randomString(5)}`;
+    //const password = generatePassword(9);
 
-    return {
-        FirstName: 'Usman',
-        LastName: 'Sarfraz',
-        username,
-        password,
+    return{
+        userName,
+        password : 'Usman@1234',
     };
 }
