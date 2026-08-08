@@ -1,26 +1,25 @@
-import {test as base , expect} from "@playwright/test";
+import { test as base, expect } from "@playwright/test";
 import { createUserData, UserData } from "../factories/userFactory";
+import { test as apiTest } from "./userFixture";
 import { UserApi } from "../APIs/userAPI";
 
-export type MyFixtures ={
-    testUser : UserData
-}
-export const test = base.extend<MyFixtures>({
-    
-    testUser: async ({ request }, use) => 
-    {
-        const userApi = new UserApi(request);
-        let userId : number;
+export type MyFixtures = {
+    testUser: UserData;
+};
+
+export const test = apiTest.extend<MyFixtures>({
+    testUser: async ({ userAPI }, use) => {
+        let userId: string;
         const userData = createUserData();
 
-        const createUserResponse = await userApi.createUser(userData);
+        const createUserResponse = await userAPI.createUser(userData);
         const registerResponseBody = await createUserResponse.json();
         userId = registerResponseBody.userID;
-        
+
         expect(createUserResponse.status()).toBe(201);
         expect(registerResponseBody.username === userData.userName).toBeTruthy();
 
-        const GenerateTokenResponse = await userApi.generateToken(userData);
+        const GenerateTokenResponse = await userAPI.generateToken(userData);
         const tokenResponseBody = await GenerateTokenResponse.json();
 
         const token = tokenResponseBody.token;
@@ -30,11 +29,10 @@ export const test = base.extend<MyFixtures>({
         expect(tokenResponseBody.token).toBeTruthy();
 
         await use(userData);
-        if(userId)
-        {
-            const deleteResponse = await userApi.deleteUser(userId,token);
+
+        if (userId) {
+            const deleteResponse = await userAPI.deleteUser(userId, token);
             expect(deleteResponse.status()).toBe(204);
-           
         }
     }
 });

@@ -27,7 +27,7 @@ export class UserApi
         return GenerateTokenResponse;
     }
 
-    async deleteUser(userId : number , token : any)
+    async deleteUser(userId : string , token : any)
     {
         const deletionResponse = await this.request.delete(
             `https://demoqa.com/Account/v1/User/${userId}`,
