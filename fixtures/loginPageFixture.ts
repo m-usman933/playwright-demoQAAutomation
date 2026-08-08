@@ -10,7 +10,6 @@ export const test = base.extend<MyFixtures>({
     loginPage: async ({ page }, use) => 
     {
         const loginPage = new LoginPage(page);
-        await loginPage.navigateToLoginPage();
         await use(loginPage);
     }
 });

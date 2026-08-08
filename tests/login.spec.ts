@@ -1,5 +1,5 @@
 import {expect , Browser} from "@playwright/test";
-import { test } from "../fixtures/fixtures";
+import { test } from "../fixtures/loginPageFixture";
 import {LoginPage} from  "../pages/loginPage";
 
 test("Valid login to demoQA", async({loginPage, page})=>
