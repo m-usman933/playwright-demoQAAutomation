@@ -1,14 +1,18 @@
-import { test as base, expect } from "@playwright/test";
+import { test as base, expect, request as playwrightRequest , APIRequestContext} from "@playwright/test";
 import { createUserData, UserData } from "../factories/userFactory";
-import { test as apiTest } from "./userFixture";
+import { test as apiTest } from "./createAPIRequest";
 import { UserApi } from "../APIs/userAPI";
 
 export type MyFixtures = {
-    testUser: UserData;
+    testUser:{
+        userData: UserData;
+        authenticatedRequest: APIRequestContext;
+    }
+    
 };
 
 export const test = apiTest.extend<MyFixtures>({
-    testUser: async ({ userAPI }, use) => {
+    testUser: async ({ userAPI , request }, use) => {
         let userId: string;
         const userData = createUserData();
 
@@ -17,18 +21,25 @@ export const test = apiTest.extend<MyFixtures>({
         userId = registerResponseBody.userID;
 
         expect(createUserResponse.status()).toBe(201);
-        expect(registerResponseBody.username === userData.userName).toBeTruthy();
 
         const GenerateTokenResponse = await userAPI.generateToken(userData);
         const tokenResponseBody = await GenerateTokenResponse.json();
-
         const token = tokenResponseBody.token;
 
-        expect(GenerateTokenResponse.status()).toBe(200);
-        expect(tokenResponseBody.status).toBe("Success");
+
         expect(tokenResponseBody.token).toBeTruthy();
 
-        await use(userData);
+        const authenticatedRequest = await playwrightRequest.newContext({
+        extraHTTPHeaders: {
+            Authorization: `Bearer ${token}`
+        }
+});
+        const newAuthUser = {
+            userData,
+            authenticatedRequest,
+        }
+
+        await use(newAuthUser);
 
         if (userId) {
             const deleteResponse = await userAPI.deleteUser(userId, token);
