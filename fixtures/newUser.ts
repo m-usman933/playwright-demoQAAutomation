@@ -5,6 +5,7 @@ import { UserApi } from "../APIs/userAPI";
 
 export type MyFixtures = {
     testUser:{
+        userId : string;
         userData: UserData;
         authenticatedRequest: APIRequestContext;
     }
@@ -12,7 +13,7 @@ export type MyFixtures = {
 };
 
 export const test = apiTest.extend<MyFixtures>({
-    testUser: async ({ userAPI , request }, use) => {
+    testUser: async ({ userAPI }, use) => {
         let userId: string;
         const userData = createUserData();
 
@@ -35,6 +36,7 @@ export const test = apiTest.extend<MyFixtures>({
         }
 });
         const newAuthUser = {
+            userId,
             userData,
             authenticatedRequest,
         }
@@ -44,6 +46,7 @@ export const test = apiTest.extend<MyFixtures>({
         if (userId) {
             const deleteResponse = await userAPI.deleteUser(userId, token);
             expect(deleteResponse.status()).toBe(204);
+            console.log("user deleted")
         }
     }
 });
