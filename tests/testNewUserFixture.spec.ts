@@ -46,7 +46,7 @@ test("verify USER and API fixture", async ({ request, testUser }) => {
 
     
     console.log("Printing Book Details");
-    console.log(getResponseBody.books);
+   // console.log(getResponseBody.books);
     expect(getResponseBody.books).toBeDefined();
     expect(Array.isArray(getResponseBody.books)).toBe(true);
 
@@ -57,4 +57,26 @@ test("verify USER and API fixture", async ({ request, testUser }) => {
 
     expect(bookHasIsbn).toBeTruthy();
 
+    const everyBookHasStringIsbn = getResponseBody.books.every(
+    (book: any) =>
+         typeof book.isbn === "string"
+    );
+
+    const invalidRequest = await testUser.authenticatedRequest.post(
+        'https://demoqa.com/BookStore/v1/Books',
+        {
+            data:
+            {
+                userId : testUser.userId,
+                books : 'ghguhyub787967756',
+            }
+        }
+    );
+    console.log(invalidRequest.status());
+
+    const body = await invalidRequest.text();
+    console.log(body);
+
+    //const invalidRequestResponse = await invalidRequest.json();
+    //console.log(invalidRequestResponse);
 });
