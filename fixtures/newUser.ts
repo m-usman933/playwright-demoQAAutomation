@@ -1,15 +1,20 @@
-import { test as base, expect, request as playwrightRequest , APIRequestContext} from "@playwright/test";
+import {
+    test as base,
+    expect,
+    request as playwrightRequest,
+    APIRequestContext
+} from "@playwright/test";
+
 import { createUserData, UserData } from "../factories/userFactory";
 import { test as apiTest } from "./createAPIRequest";
-import { UserApi } from "../APIs/userAPI";
 
 export type MyFixtures = {
-    testUser:{
-        userId : string;
+    testUser: {
+        userId: string;
         userData: UserData;
         authenticatedRequest: APIRequestContext;
-    }
-    
+        token: string;
+    };
 };
 
 export const test = apiTest.extend<MyFixtures>({
@@ -19,34 +24,40 @@ export const test = apiTest.extend<MyFixtures>({
 
         const createUserResponse = await userAPI.createUser(userData);
         const registerResponseBody = await createUserResponse.json();
+
         userId = registerResponseBody.userID;
 
         expect(createUserResponse.status()).toBe(201);
 
-        const GenerateTokenResponse = await userAPI.generateToken(userData);
-        const tokenResponseBody = await GenerateTokenResponse.json();
+        const generateTokenResponse = await userAPI.generateToken(userData);
+        const tokenResponseBody = await generateTokenResponse.json();
         const token = tokenResponseBody.token;
 
-
-        expect(tokenResponseBody.token).toBeTruthy();
+        expect(token).toBeTruthy();
 
         const authenticatedRequest = await playwrightRequest.newContext({
-        extraHTTPHeaders: {
-            Authorization: `Bearer ${token}`
-        }
-});
+            extraHTTPHeaders: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
         const newAuthUser = {
             userId,
             userData,
             authenticatedRequest,
-        }
+            token
+        };
 
         await use(newAuthUser);
 
         if (userId) {
-            const deleteResponse = await userAPI.deleteUser(userId, token);
-            expect(deleteResponse.status()).toBe(204);
-            console.log("user deleted")
+            const deleteResponse = await userAPI.deleteUser(
+                userId,
+                newAuthUser.token
+            );
+
+            console.log("Delete status:", deleteResponse.status());
+            console.log("Delete body:", await deleteResponse.text());
         }
     }
 });

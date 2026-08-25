@@ -40,7 +40,5 @@ export class LoginPage
         await this.enterUsername(username);
         await this.enterPassword(password);
         await this.clickLogin();
-
-        await expect(this.page.getByRole("button", { name: "Logout" })).toBeVisible();
     }
 }

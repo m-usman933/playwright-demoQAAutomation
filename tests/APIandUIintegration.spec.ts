@@ -1,8 +1,21 @@
 import { expect } from "@playwright/test";
-import {test} from "../fixtures/newUser";
+import {test} from "../fixtures/loginPageFixture";
 import { LoginPage } from "../pages/loginPage";
 
-test ("API and UI Integration" , async({testUser})=>
+test.use({
+    storageState: "playwright/.auth/empty.json"
+});
+test ("API and UI Integration" , async({testUser,loginPage,page})=>
 {
-    console.log(testUser.userData.userName);
+    await loginPage.login(testUser.userData.userName, testUser.userData.password);
+    await expect(page).toHaveURL("https://demoqa.com/profile");
+
+    const cookies = await page.context().cookies(); 
+
+    const uiToken = cookies.find(
+    cookie => cookie.name === "token"
+    )?.value;
+
+    expect(uiToken).toBeTruthy();
+    testUser.token = uiToken!;
 })
