@@ -1,5 +1,6 @@
 import { expect  } from "@playwright/test";
 import { test } from "../fixtures/newUser";
+import { validateResponse } from "../Helpers/responseHelper";
 
 
 test("verify USER and API fixture", async ({ request, testUser }) => {
@@ -26,7 +27,8 @@ test("verify USER and API fixture", async ({ request, testUser }) => {
         }
     );
 
-    expect(APIResponseJson.status()).toBe(201);
+    const isResourceCreated = validateResponse(APIResponseJson, 201);
+
     const responseBody = await APIResponseJson.json();
     console.log("Following Books added successfully");
 
@@ -35,6 +37,9 @@ test("verify USER and API fixture", async ({ request, testUser }) => {
     )
 
     const getResponseBody = await getBooksInUserAccount.json();
+
+    console.log("Printing Books Now : ");
+    console.log(getResponseBody);
 
     const isBookAdded = booksToAdd.every(
         (book)=>
@@ -62,21 +67,5 @@ test("verify USER and API fixture", async ({ request, testUser }) => {
          typeof book.isbn === "string"
     );
 
-    const invalidRequest = await testUser.authenticatedRequest.post(
-        'https://demoqa.com/BookStore/v1/Books',
-        {
-            data:
-            {
-                userId : testUser.userId,
-                books : 'ghguhyub787967756',
-            }
-        }
-    );
-    console.log(invalidRequest.status());
-
-    const body = await invalidRequest.text();
-    console.log(body);
-
-    //const invalidRequestResponse = await invalidRequest.json();
-    //console.log(invalidRequestResponse);
+    
 });
