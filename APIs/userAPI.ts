@@ -9,7 +9,7 @@ export class UserApi
     {
          const response = await this.request.post
         (
-            'https://demoqa.com/Account/v1/User',
+            '/Account/v1/User',
             {
                 data : userInfomation,
             }
@@ -20,7 +20,7 @@ export class UserApi
     async generateToken(userInfomation : UserData)
     {
         const GenerateTokenResponse = await this.request.post(
-        "https://demoqa.com/Account/v1/GenerateToken",
+        "/Account/v1/GenerateToken",
         {
             data: userInfomation,
         });
@@ -30,7 +30,7 @@ export class UserApi
     async deleteUser(userId : string , token : any)
     {
         const deletionResponse = await this.request.delete(
-            `https://demoqa.com/Account/v1/User/${userId}`,
+            `/Account/v1/User/${userId}`,
                 {
                     headers:{
                     Authorization : `Bearer ${token}`,

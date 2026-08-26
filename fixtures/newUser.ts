@@ -50,14 +50,17 @@ export const test = apiTest.extend<MyFixtures>({
 
         await use(newAuthUser);
 
-        if (userId) {
-            const deleteResponse = await userAPI.deleteUser(
+        try
+        {
+                const deleteResponse = await userAPI.deleteUser(
                 userId,
                 newAuthUser.token
             );
-
-            console.log("Delete status:", deleteResponse.status());
-            console.log("Delete body:", await deleteResponse.text());
+                expect(deleteResponse.status()).toBe(204);
+        }
+        finally
+        {
+            await authenticatedRequest.dispose();
         }
     }
 });
