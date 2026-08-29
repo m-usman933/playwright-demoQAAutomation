@@ -38,8 +38,8 @@ test("verify USER and API fixture", async ({ request, testUser }) => {
 
     const getResponseBody = await getBooksInUserAccount.json();
 
-    console.log("Printing Books Now : ");
-    console.log(getResponseBody);
+    //console.log("Printing Books Now : ");
+    //console.log(getResponseBody);
 
     const isBookAdded = booksToAdd.every(
         (book)=>
