@@ -4,8 +4,6 @@ import {LoginPage} from  "../pages/loginPage";
 
 test("Valid login to demoQA", async({loginPage, page})=>
 {
-    
-    
     await expect(page).toHaveURL('https://demoqa.com/profile');
     await page.getByText('Elements').click();
     await page.locator('[href="/checkbox"]').click();
