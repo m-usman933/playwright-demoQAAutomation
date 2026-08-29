@@ -3,7 +3,7 @@ import {test} from "../fixtures/loginPageFixture";
 import { LoginPage } from "../pages/loginPage";
 
 test.use({
-    storageState: "playwright/.auth/empty.json"
+  storageState: { cookies: [], origins: [] }
 });
 test ("API and UI Integration" , async({testUser,loginPage,page})=>
 {
