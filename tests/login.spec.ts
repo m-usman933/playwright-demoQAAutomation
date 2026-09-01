@@ -9,6 +9,8 @@ test("Valid login to demoQA", async({loginPage, page})=>
     await page.getByText('Elements').click();
     await page.locator('[href="/checkbox"]').click();
 
-    await page.getByRole('checkbox',{name :'Select Home'}).check();
+    console.log("🔥 REACHED CHECKBOX");
+    await page.getByRole('checkbox',{name :'Select'}).check();
+    console.log("Checkbox clicked");
     //await page.waitForTimeout(5000);
 })
